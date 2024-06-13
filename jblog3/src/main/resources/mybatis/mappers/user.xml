@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+    <insert id="insert" parameterType="uservo">
+        <![CDATA[
+            insert
+            into user
+            values (#{id}, #{name}, #{password}, current_date())
+        ]]>
+        <selectKey keyProperty="id" resultType="string" order="AFTER">
+            <![CDATA[
+                select last_insert_id() from dual
+            ]]>
+        </selectKey>
+    </insert>
+    <select id="findById" parameterType="string" resultType="uservo">
+        select id, name, join_date as joinDate
+        from user
+        where id = #{id}
+    </select>
+    <select id="findByName" parameterType="string" resultType="uservo">
+        select id, name, join_date as joinDate
+        from user
+        where name = #{name}
+    </select>
+</mapper>
+
+
