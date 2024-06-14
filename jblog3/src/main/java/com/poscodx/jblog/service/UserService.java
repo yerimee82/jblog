@@ -14,4 +14,8 @@ public class UserService {
     public void join(UserVo vo) {
         userRepository.insert(vo);
     }
+
+    public UserVo getUser(String id) {
+        return userRepository.findById(id);
+    }
 }

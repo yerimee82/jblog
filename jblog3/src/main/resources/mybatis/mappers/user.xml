@@ -8,11 +8,6 @@
             into user
             values (#{id}, #{name}, #{password}, current_date())
         ]]>
-        <selectKey keyProperty="id" resultType="string" order="AFTER">
-            <![CDATA[
-                select last_insert_id() from dual
-            ]]>
-        </selectKey>
     </insert>
     <select id="findById" parameterType="string" resultType="uservo">
         select id, name, join_date as joinDate

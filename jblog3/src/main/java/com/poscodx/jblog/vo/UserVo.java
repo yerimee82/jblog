@@ -10,8 +10,7 @@ import java.util.Date;
 @Data
 public class UserVo {
     @NotEmpty
-    @Unique(field = "id")
-    @Length(min = 4, max = 12)
+    @Length(min = 4, max = 10)
     private String id;
 
     @NotEmpty
