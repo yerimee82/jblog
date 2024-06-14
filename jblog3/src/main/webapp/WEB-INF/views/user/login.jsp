@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!doctype html>
 <html>
@@ -13,9 +14,17 @@
 <body>
 	<div class="center-content">
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
-		<form class="login-form">
-      		<label>아이디</label> <input type="text" name="id">
-      		<label>패스워드</label> <input type="text" name="password">
+		<form class="login-form" name="loginform" method="post" action="${pageContext.request.contextPath}/user/auth">
+      		<label for="id"><spring:message code="user.join.label.id"/></label>
+			<input id="id" name="id" type="text" value="">
+
+      		<label for="password"><spring:message code="user.join.label.id"/></label>
+			<input id="password" name="password" type="text" value="">
+			<c:if test="${result == 'fail'}">
+				<p>
+					로그인이 실패 했습니다.
+				</p>
+			</c:if>
       		<input type="submit" value="로그인">
 		</form>
 	</div>

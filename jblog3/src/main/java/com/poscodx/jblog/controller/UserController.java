@@ -24,6 +24,7 @@ public class UserController {
     public String joinForm(@ModelAttribute UserVo vo) {
         return "user/join";
     }
+
     @PostMapping("/join")
     public String join(@Valid @ModelAttribute UserVo vo, BindingResult result, Model model) {
         if(result.hasErrors()) {
@@ -39,5 +40,10 @@ public class UserController {
     @GetMapping("/joinsuccess")
     public String joinsuccess() {
         return "user/joinsuccess";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/login";
     }
 }

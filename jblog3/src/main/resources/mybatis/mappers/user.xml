@@ -6,7 +6,7 @@
         <![CDATA[
             insert
             into user
-            values (#{id}, #{name}, #{password}, current_date())
+            values (#{id}, #{name}, password(#{password}), current_date())
         ]]>
     </insert>
     <select id="findById" parameterType="string" resultType="uservo">
@@ -18,6 +18,12 @@
         select id, name, join_date as joinDate
         from user
         where name = #{name}
+    </select>
+    <select id="findByIdAndPassword" parameterType="map" resultType="uservo">
+        select id, name, join_date as joinDate
+        from user
+        where id = #{id}
+        and password = password(#{password})
     </select>
 </mapper>
 

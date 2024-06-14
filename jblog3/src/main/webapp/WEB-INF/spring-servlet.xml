@@ -33,6 +33,29 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth"/>
+			<bean class="com.poscodx.jblog.security.LoginInterceptor" />
+		</mvc:interceptor>
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/user/logout"/>-->
+<!--			<bean class="com.poscodx.jblog.security.LogoutInterceptor" />-->
+<!--		</mvc:interceptor>-->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/user/auth"/>
+			<mvc:exclude-mapping path="/user/logout"/>
+			<mvc:exclude-mapping path="/assets/**"/>
+			<bean class="com.poscodx.jblog.security.AuthInterceptor" />
+		</mvc:interceptor>
+<!--		<mvc:interceptor>-->
+<!--			<mvc:mapping path="/**"/>-->
+<!--			<bean class="com.poscodx.mysite.interceptor.SiteInterceptor" />-->
+<!--		</mvc:interceptor>-->
+	</mvc:interceptors>
+
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
 

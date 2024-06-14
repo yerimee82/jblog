@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
@@ -20,5 +23,12 @@ public class UserRepository {
 
     public UserVo findByName(String name) {
         return sqlSession.selectOne("user.findByName", name);
+    }
+
+    public UserVo findByIdAndPassword(String id, String password) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("password", password);
+        return sqlSession.selectOne("user.findByIdAndPassword", params);
     }
 }
