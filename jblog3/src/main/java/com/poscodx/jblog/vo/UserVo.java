@@ -21,5 +21,6 @@ public class UserVo {
     @NotEmpty
     @Length(min = 4, max = 16)
     private String password;
+
     private Date joinDate;
 }

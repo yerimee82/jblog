@@ -18,10 +18,9 @@ public abstract class AbstractUniqueValidator implements ConstraintValidator<Uni
     @Override
     public abstract boolean isValid(String value, ConstraintValidatorContext context);
 
-    protected void addConstraintViolation(ConstraintValidatorContext context, String messageTemplate, String propertyNode) {
+    protected void addConstraintViolation(ConstraintValidatorContext context, String messageTemplate) {
         context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(messageTemplate)
-                .addPropertyNode(propertyNode)
                 .addConstraintViolation();
     }
 }

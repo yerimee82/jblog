@@ -17,7 +17,7 @@ public class UniqueIdValidator extends AbstractUniqueValidator{
         boolean isIdValidate = userRepository.findById(value) == null;
         if(!isIdValidate) {
             String errorMessage = "{Unique.userVo.id}";
-            addConstraintViolation(context, errorMessage, value);
+            addConstraintViolation(context, errorMessage);
         }
 
         return isIdValidate;

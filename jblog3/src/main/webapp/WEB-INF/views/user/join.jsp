@@ -17,6 +17,7 @@
 				var id = $("#id").val();
 				console.log("Entered ID: " + id);
 				if (id === '') {
+					alert("아이디를 입력하세요.");
 					return;
 				}
 
@@ -35,7 +36,7 @@
 							return;
 						}
 						// 사용 가능
-						$("#btn-checkId").hide();
+						// $("#btn-checkId").hide();
 						$("#img-checkId").show();
 					}
 				});
@@ -70,9 +71,11 @@
 
 			<label class="block-label" for="password"><spring:message code="user.join.label.password"/></label>
 			<form:password path="password" />
-			<p style="color:#f00; text-align: center; padding: 0">
-				<form:errors path="password" />
-			</p>
+			<spring:hasBindErrors name="userVo">
+			<c:if test="${errors.hasFieldErrors('password')}">
+				<spring:message code="${errors.getFieldError('password').codes[0]}"/>
+			</c:if>
+			</spring:hasBindErrors>
 
 			<fieldset>
 				<legend>약관동의</legend>

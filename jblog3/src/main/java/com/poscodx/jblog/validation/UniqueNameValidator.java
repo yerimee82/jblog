@@ -17,7 +17,7 @@ public class UniqueNameValidator extends AbstractUniqueValidator{
 
         if(!isNameValidate) {
             String errorMessage = "{Unique.userVo.name}";
-            addConstraintViolation(context, errorMessage, value);
+            addConstraintViolation(context, errorMessage);
         }
 
         return isNameValidate;
