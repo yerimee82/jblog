@@ -44,6 +44,10 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 .welcome-message span:before					{ content: url(../images/bul1.gif);}
 .welcome-message span:after						{ content: url(../images/bul2.gif);}
 
+.error-message								{ height: 200px }
+.error-message span							{ font-size:1.2em; font-weight:bold; color:#777 }
+.error-message span:before					{ content: url(../images/bul1.gif);}
+.error-message span:after						{ content: url(../images/bul2.gif);}
 
 
 div#container				{ width:920px; margin:0 auto }

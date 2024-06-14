@@ -90,5 +90,5 @@
 	<mvc:resources mapping="/images/**" location="file:/Users/yerim/Desktop/jblog-upload/" />
 
 	<context:annotation-config />
-	<context:component-scan base-package="com.poscodx.jblog.controller" />
+	<context:component-scan base-package="com.poscodx.jblog.controller, com.poscodx.jblog.exception" />
 </beans>

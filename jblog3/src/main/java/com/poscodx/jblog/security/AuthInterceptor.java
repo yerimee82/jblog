@@ -47,12 +47,19 @@ public class AuthInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         String[] uriParts = requestURI.split("/");
 
-        for (String uriPart : uriParts) {
-            System.out.println(uriPart);
+        for (int i = 0; i < uriParts.length; i++) {
+            System.out.println(i+":"+uriParts[i]);
         }
 
+        if (!isBlogOwner(uriParts, authUser.getId())) {
+            response.sendRedirect(request.getContextPath());
+            return false;
+        }
 
-        //10. 옳은 관리자 권한
+        //10. 블로그 소유자가 맞다면 접근 허용
         return true;
+    }
+    private boolean isBlogOwner(String[] uriParts, String userId) {
+        return userId.equals(uriParts[2]);
     }
 }
