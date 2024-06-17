@@ -39,12 +39,20 @@ public class BlogService {
         blogRepository.insertPost(vo);
     }
 
+    // 해당 유저의 모든 글 찾기
     public List<PostVo> getPosts(String id) {
         return blogRepository.findAllPosts(id);
     }
 
+    // 카테고리에 맞는 글 찾기
+
     public List<PostVo> getPosts(String id, Long categoryNo) {
         return blogRepository.findByCategories(id, categoryNo);
+    }
+
+    // 글 번호로 찾기
+    public List<PostVo> getSelectedPost(Long no) {
+        return blogRepository.findByPostNo(no);
     }
 
 }

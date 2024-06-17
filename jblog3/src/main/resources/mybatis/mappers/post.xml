@@ -48,4 +48,9 @@
                 a.reg_date
         ]]>
     </select>
+    <select id="findByPostNo" parameterType="long" resultType="postvo">
+        select no, title, contents, reg_date as redDate, category_no as category
+        from post
+        where no = #{no}
+    </select>
 </mapper>

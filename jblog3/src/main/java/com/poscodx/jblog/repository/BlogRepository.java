@@ -51,4 +51,8 @@ public class BlogRepository {
 
         return sqlSession.selectList("post.findByCategoryAndId", params);
     }
+
+    public List<PostVo> findByPostNo(Long postNo) {
+        return sqlSession.selectList("post.findByPostNo", postNo);
+    }
 }

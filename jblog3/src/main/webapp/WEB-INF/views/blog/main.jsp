@@ -32,7 +32,12 @@
 				<ul class="blog-list">
 					<c:if test="${fn:length(posts) > 1}">
 						<c:forEach items="${posts}" var="post">
-							<li><a href="#">${post.title}</a><span>${post.regDate}</span></li>
+							<li>
+								<a href="${pageContext.request.contextPath}/${blog.id}/${post.categoryNo}/${post.no}">
+										${post.title}
+								</a>
+								<span>${post.regDate}</span>
+							</li>
 						</c:forEach>
 					</c:if>
 				</ul>

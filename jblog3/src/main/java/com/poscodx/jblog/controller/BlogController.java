@@ -42,17 +42,26 @@ public class BlogController {
         }
 
         List<CategoryVo> categories = blogService.getCategories(id);
-        List<PostVo> posts;
+        model.addAttribute("categories", categories);
 
-        if (categoryNo != null) {
+        // 1. 카테고리, 포스트 다 없는 경우 -> 전체 게시글
+        // 2. 카테고리만 있는 경우 -> 해당 카테고리의 모든 게시글
+        // 3. 카테고리, 포스트 다 있는 경우 -> 해당 카테고리의 해당 글 (글 번호로 찾기)
+        List<PostVo> posts = null;
+        if (postNo !=  null) {
+            posts = blogService.getSelectedPost(postNo);
+            System.out.println(posts);
+        }
+
+        if (categoryNo != null && postNo == null) {
             posts = blogService.getPosts(id, categoryNo);
-        } else {
+        }
+
+        if(categoryNo == null && postNo == null) {
             posts = blogService.getPosts(id);
         }
 
-        model.addAttribute("categories", categories);
         model.addAttribute("posts", posts);
-
         return "blog/main";
     }
     @Auth
