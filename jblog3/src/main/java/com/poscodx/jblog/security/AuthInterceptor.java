@@ -47,9 +47,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         String[] uriParts = requestURI.split("/");
 
-        for (int i = 0; i < uriParts.length; i++) {
-            System.out.println(i+":"+uriParts[i]);
-        }
+//        for (int i = 0; i < uriParts.length; i++) {
+//            System.out.println(i+":"+uriParts[i]);
+//        }
 
         if (!isBlogOwner(uriParts, authUser.getId())) {
             response.sendRedirect(request.getContextPath());

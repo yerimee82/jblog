@@ -18,7 +18,7 @@
       		<label for="id"><spring:message code="user.join.label.id"/></label>
 			<input id="id" name="id" type="text" value="">
 
-      		<label for="password"><spring:message code="user.join.label.id"/></label>
+      		<label for="password"><spring:message code="user.join.label.password"/></label>
 			<input id="password" name="password" type="text" value="">
 			<c:if test="${result == 'fail'}">
 				<p>
