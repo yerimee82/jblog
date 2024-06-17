@@ -3,6 +3,7 @@ package com.poscodx.jblog.service;
 import com.poscodx.jblog.repository.BlogRepository;
 import com.poscodx.jblog.vo.BlogVo;
 import com.poscodx.jblog.vo.CategoryVo;
+import com.poscodx.jblog.vo.PostVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,18 @@ public class BlogService {
 
     public void deleteCategory(Long no) {
         blogRepository.deleteCategory(no);
+    }
+
+    public void addPost(PostVo vo) {
+        blogRepository.insertPost(vo);
+    }
+
+    public List<PostVo> getPosts(String id) {
+        return blogRepository.findAllPosts(id);
+    }
+
+    public List<PostVo> getPosts(String id, Long categoryNo) {
+        return blogRepository.findByCategories(id, categoryNo);
     }
 
 }

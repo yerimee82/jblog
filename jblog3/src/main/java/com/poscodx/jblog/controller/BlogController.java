@@ -8,6 +8,7 @@ import com.poscodx.jblog.service.FileUploadService;
 import com.poscodx.jblog.service.UserService;
 import com.poscodx.jblog.vo.BlogVo;
 import com.poscodx.jblog.vo.CategoryVo;
+import com.poscodx.jblog.vo.PostVo;
 import com.poscodx.jblog.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,13 +32,26 @@ public class BlogController {
     public String index(
             @PathVariable("id") String id,
             @PathVariable(value = "categoryNo", required = false) Long categoryNo,
-            @PathVariable(value = "postNo", required = false) Long postNo
+            @PathVariable(value = "postNo", required = false) Long postNo,
+            Model model
     ) {
 
         UserVo userVo = userService.getUser(id);
         if (userVo == null) {
             throw new BlogNotFoundException("해당 블로그를 찾을 수 없습니다." + id);
         }
+
+        List<CategoryVo> categories = blogService.getCategories(id);
+        List<PostVo> posts;
+
+        if (categoryNo != null) {
+            posts = blogService.getPosts(id, categoryNo);
+        } else {
+            posts = blogService.getPosts(id);
+        }
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("posts", posts);
 
         return "blog/main";
     }
@@ -71,7 +85,6 @@ public class BlogController {
     @RequestMapping("/admin/category")
     public String adminCategory(@PathVariable("id") String id, Model model) {
         List<CategoryVo> categories = blogService.getCategories(id);
-        System.out.println(categories.size());
         model.addAttribute("list", categories);
 
         return "blog/admin-category";
@@ -101,10 +114,29 @@ public class BlogController {
 
     @Auth
     @RequestMapping("/admin/write")
-    public String adminWrite(@PathVariable("id") String id) {
+    public String adminWrite(@PathVariable("id") String id, Model model) {
+        List<CategoryVo> categories = blogService.getCategories(id);
+        model.addAttribute("categories", categories);
 //        if(!id.equals(authUser.getId())) {
 //
 //        }
         return "blog/admin-write";
+    }
+
+
+    @Auth
+    @PostMapping ("/admin/write")
+    public String addPost(@PathVariable("id") String id,
+                          @RequestParam("title") String title,
+                          @RequestParam("content") String content,
+                          @RequestParam(value = "category", required = false) Long categoryNo) {
+        PostVo postVo = new PostVo();
+        postVo.setTitle(title);
+        postVo.setContents(content);
+        postVo.setCategoryNo(categoryNo);
+        System.out.println(categoryNo);
+
+        blogService.addPost(postVo);
+        return "redirect:/" + id;
     }
 }

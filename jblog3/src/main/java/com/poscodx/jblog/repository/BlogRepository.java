@@ -2,11 +2,14 @@ package com.poscodx.jblog.repository;
 
 import com.poscodx.jblog.vo.BlogVo;
 import com.poscodx.jblog.vo.CategoryVo;
+import com.poscodx.jblog.vo.PostVo;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,5 +34,21 @@ public class BlogRepository {
 
     public void deleteCategory(Long no) {
         sqlSession.delete("category.delete", no);
+    }
+
+    public void insertPost(PostVo vo) {
+        sqlSession.insert("post.insert", vo);
+    }
+
+    public List<PostVo> findAllPosts(String id) {
+        return sqlSession.selectList("post.findAllPosts", id);
+    }
+
+    public List<PostVo> findByCategories(String id, Long categoryNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("categoryNo", categoryNo);
+
+        return sqlSession.selectList("post.findByCategoryAndId", params);
     }
 }
