@@ -17,7 +17,7 @@
 		<div id="wrapper">
 			<div id="content" class="full-screen">
 				<c:import url="/WEB-INF/views/blog/includes/adminMenu.jsp" />
-				<form method="post" action="${pageContext.request.contextPath }/${id}/admin/basic-update" enctype="multipart/form-data">
+				<form method="post" action="${pageContext.request.contextPath}/${blog.id}/admin/basic/update" enctype="multipart/form-data">
 	 		      	<table class="admin-config">
 			      		<tr>
 			      			<td class="t">블로그 제목</td>
@@ -30,7 +30,7 @@
 			      		</tr>      		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
-							<td><input type="file" name="file" value="${blog.logo}"></td>
+							<td><input type="file" name="file"></td>
 			      		</tr>           		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
