@@ -26,7 +26,8 @@
 			      		</tr>
 			      		<tr>
 			      			<td class="t">로고이미지</td>
-			      			<td><img src="${pageContext.request.contextPath}${blog.logo }"></td>
+			      			<td><img id="logo" src="${pageContext.request.contextPath}${blog.logo }"></td>
+							<input type="hidden" name="logo" value="${blog.logo}">
 			      		</tr>      		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>

@@ -31,7 +31,7 @@
 							<td>${vo.postCount}</td>
 							<td>${vo.description}</td>
 							<td>
-								<c:if test="${count > 0}">
+								<c:if test="${status.index ne 0}">
 									<form id="deleteForm_${status.index}" action="${pageContext.request.contextPath}/${blog.id}/admin/category/delete/${vo.no}" method="post" style="display:inline;">
 										<a href="javascript:void(0);" onclick="confirmDelete('deleteForm_${status.index}')">
 											<img src="${pageContext.request.contextPath}/assets/images/delete.jpg">

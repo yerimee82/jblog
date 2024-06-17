@@ -50,7 +50,6 @@ public class BlogController {
         List<PostVo> posts = null;
         if (postNo !=  null) {
             posts = blogService.getSelectedPost(postNo);
-            System.out.println(posts);
         }
 
         if (categoryNo != null && postNo == null) {
@@ -78,8 +77,6 @@ public class BlogController {
     public String updateAdminBasic(@PathVariable("id") String id,
                                    @ModelAttribute BlogVo blogVo, MultipartFile file) {
         String logo = fileUploadService.restore(file);
-
-        System.out.println(logo);
         if(logo != null) {
             blogVo.setLogo(logo);
         }
@@ -143,7 +140,6 @@ public class BlogController {
         postVo.setTitle(title);
         postVo.setContents(content);
         postVo.setCategoryNo(categoryNo);
-        System.out.println(categoryNo);
 
         blogService.addPost(postVo);
         return "redirect:/" + id;
