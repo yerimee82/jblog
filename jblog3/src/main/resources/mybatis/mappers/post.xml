@@ -53,4 +53,14 @@
         from post
         where no = #{no}
     </select>
+    <update id="updateToDefault" parameterType="map">
+        update post
+        set category_no = #{defaultCategoryNo}
+        where category_no = #{oldCategoryNo}
+    </update>
+    <select id="findDefaultNo" parameterType="string" resultType="long">
+        select no
+        from category
+        where id = #{id} and name = '미분류';
+    </select>
 </mapper>

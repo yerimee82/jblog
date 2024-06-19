@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -54,5 +55,17 @@ public class BlogRepository {
 
     public List<PostVo> findByPostNo(Long postNo) {
         return sqlSession.selectList("post.findByPostNo", postNo);
+    }
+
+    public Long findDefaultNo(String id) {
+        return sqlSession.selectOne("post.findDefaultNo", id);
+    }
+
+    public void updateCategoryToDefault(Long defaultNo, Long categoryNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("defaultCategoryNo", defaultNo);
+        params.put("oldCategoryNo", categoryNo);
+
+        sqlSession.update("post.updateToDefault", params);
     }
 }

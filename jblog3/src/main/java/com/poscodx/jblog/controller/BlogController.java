@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/{id:(?!assets).*}")
@@ -31,8 +33,8 @@ public class BlogController {
     @RequestMapping({"","/{categoryNo}", "/{categoryNo}/{postNo}" })
     public String index(
             @PathVariable("id") String id,
-            @PathVariable(value = "categoryNo", required = false) Long categoryNo,
-            @PathVariable(value = "postNo", required = false) Long postNo,
+            @PathVariable(value = "categoryNo") Optional<Long> categoryNo,
+            @PathVariable(value = "postNo") Optional<Long> postNo,
             Model model
     ) {
 
@@ -44,25 +46,25 @@ public class BlogController {
         List<CategoryVo> categories = blogService.getCategories(id);
         model.addAttribute("categories", categories);
 
-        // 1. 카테고리, 포스트 다 없는 경우 -> 전체 게시글
-        // 2. 카테고리만 있는 경우 -> 해당 카테고리의 모든 게시글
-        // 3. 카테고리, 포스트 다 있는 경우 -> 해당 카테고리의 해당 글 (글 번호로 찾기)
-        List<PostVo> posts = null;
-        if (postNo !=  null) {
-            posts = blogService.getSelectedPost(postNo);
-        }
-
-        if (categoryNo != null && postNo == null) {
-            posts = blogService.getPosts(id, categoryNo);
-        }
-
-        if(categoryNo == null && postNo == null) {
-            posts = blogService.getPosts(id);
-        }
-
+        List<PostVo> posts = fetchPosts(id, categoryNo, postNo);
         model.addAttribute("posts", posts);
+
         return "blog/main";
     }
+
+    private List<PostVo> fetchPosts(String id, Optional<Long> categoryNo, Optional<Long> postNo) {
+        if (postNo.isPresent()) {
+            return blogService.getSelectedPost(postNo.get());
+        }
+
+        if (categoryNo.isPresent()) {
+            return blogService.getPosts(id, categoryNo.get());
+        }
+
+        return blogService.getPosts(id);
+    }
+
+
     @Auth
     @RequestMapping("/admin/basic" )
     public String adminBasic(@PathVariable("id") String id, Model model) {
@@ -114,7 +116,7 @@ public class BlogController {
     @PostMapping("/admin/category/delete/{no}")
     public String deleteCategory(@PathVariable("id") String id,
                                  @PathVariable("no") Long categoryNo) {
-        blogService.deleteCategory(categoryNo);
+        blogService.deleteCategory(categoryNo, id);
         return "redirect:/" + id + "/admin/category";
     }
 

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -28,10 +29,20 @@ public class BlogService {
     }
 
     public List<CategoryVo> getCategories(String id) {
-        return blogRepository.findAllCategories(id);
+        List<CategoryVo> categories = blogRepository.findAllCategories(id);
+        for (CategoryVo category : categories) {
+            if ("미분류".equals(category.getName())) {
+                category.setName("기타");
+            }
+        }
+        return categories;
     }
 
-    public void deleteCategory(Long no) {
+    public void deleteCategory(Long no, String id) {
+        // 업데이트 먼저
+        Long defaultNo = blogRepository.findDefaultNo(id);
+        blogRepository.updateCategoryToDefault(defaultNo, no);
+
         blogRepository.deleteCategory(no);
     }
 
@@ -54,5 +65,6 @@ public class BlogService {
     public List<PostVo> getSelectedPost(Long no) {
         return blogRepository.findByPostNo(no);
     }
+
 
 }
