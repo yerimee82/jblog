@@ -13,9 +13,9 @@
 <div class="center-content">
     <c:import url="/WEB-INF/views/includes/header.jsp" />
     <p class="error-message">
-        <span> 404 Found 요청을 찾을 수 없습니다.</span>
+        <span> 요청을 찾을 수 없습니다. </span>
         <br><br>
-        <a href="">메인으로 돌아가기</a>
+        <a href="${pageContext.request.contextPath}">메인으로 돌아가기</a>
     </p>
 </div>
 </body>

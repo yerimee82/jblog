@@ -15,6 +15,8 @@ public class LogoutInterceptor implements HandlerInterceptor {
             session.invalidate();
         }
 
+//        request.getServletContext().removeAttribute("blog");
+
         String redirectPath = determineRedirectPath(request);
         response.sendRedirect(redirectPath);
 

@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/{id:(?!assets).*}")
@@ -46,29 +44,36 @@ public class BlogController {
         List<CategoryVo> categories = blogService.getCategories(id);
         model.addAttribute("categories", categories);
 
-        List<PostVo> posts = fetchPosts(id, categoryNo, postNo);
-        model.addAttribute("posts", posts);
+        Map<String, Object> result = fetchPosts(id, categoryNo, postNo);
+        model.addAttribute("posts", result.get("posts"));
+        model.addAttribute("selectedPost", result.get("selectedPost"));
 
         return "blog/main";
     }
 
-    private List<PostVo> fetchPosts(String id, Optional<Long> categoryNo, Optional<Long> postNo) {
+    private Map<String, Object> fetchPosts(String id, Optional<Long> categoryNo, Optional<Long> postNo) {
+        Map<String, Object> result = new HashMap<>();
+
+
         if (postNo.isPresent()) {
-            return blogService.getSelectedPost(postNo.get());
+            List<PostVo> posts = blogService.getPosts(id);
+            result.put("posts", posts);
+            result.put("selectedPost", blogService.getSelectedPost(postNo.get()).get(0));
+        } else if (categoryNo.isPresent()) {
+            List<PostVo> posts = blogService.getPosts(id, categoryNo.get());
+            result.put("posts", posts);
+        } else {  // (categoryNo.isEmpty() && postNo.isEmpty())
+            result.put("posts", blogService.getPosts(id));
         }
 
-        if (categoryNo.isPresent()) {
-            return blogService.getPosts(id, categoryNo.get());
-        }
-
-        return blogService.getPosts(id);
+        return result;
     }
 
 
     @Auth
     @RequestMapping("/admin/basic" )
-    public String adminBasic(@PathVariable("id") String id, Model model) {
-        BlogVo blog = blogService.getBlog(id);
+    public String adminBasic(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {
+        BlogVo blog = blogService.getBlog(authUser.getId());
         model.addAttribute("blog", blog);
 
         return "blog/admin-basic";
@@ -76,7 +81,8 @@ public class BlogController {
 
     @Auth
     @RequestMapping(value="/admin/basic/update" ,method= RequestMethod.POST)
-    public String updateAdminBasic(@PathVariable("id") String id,
+    public String updateAdminBasic(@AuthUser UserVo authUser,
+                                   @PathVariable("id") String id,
                                    @ModelAttribute BlogVo blogVo, MultipartFile file) {
         String logo = fileUploadService.restore(file);
         if(logo != null) {
@@ -86,13 +92,14 @@ public class BlogController {
         System.out.println(blogVo);
         blogService.updateBlog(blogVo);
         servletContext.setAttribute("blog", blogVo);
-        return "redirect:/" + id + "/admin/basic";
+        return "redirect:/" + authUser.getId() + "/admin/basic";
     }
 
     @Auth
     @RequestMapping("/admin/category")
-    public String adminCategory(@PathVariable("id") String id, Model model) {
-        List<CategoryVo> categories = blogService.getCategories(id);
+    public String adminCategory(@AuthUser UserVo authUser,
+            @PathVariable("id") String id, Model model) {
+        List<CategoryVo> categories = blogService.getCategories(authUser.getId());
         model.addAttribute("list", categories);
 
         return "blog/admin-category";
@@ -100,41 +107,41 @@ public class BlogController {
 
     @Auth
     @PostMapping("/admin/category/add")
-    public String addCategory(@PathVariable("id") String id,
+    public String addCategory(@AuthUser UserVo authUser,
+                              @PathVariable("id") String id,
                               @RequestParam("name") String name,
                               @RequestParam("desc") String description) {
         CategoryVo categoryVo = new CategoryVo();
         categoryVo.setName(name);
         categoryVo.setDescription(description);
-        categoryVo.setId(id);
+        categoryVo.setId(authUser.getId());
 
         blogService.addCategory(categoryVo);
-        return "redirect:/" + id + "/admin/category";
+        return "redirect:/" + authUser.getId() + "/admin/category";
     }
 
     @Auth
     @PostMapping("/admin/category/delete/{no}")
-    public String deleteCategory(@PathVariable("id") String id,
+    public String deleteCategory(@AuthUser UserVo authUser,
+                                 @PathVariable("id") String id,
                                  @PathVariable("no") Long categoryNo) {
-        blogService.deleteCategory(categoryNo, id);
-        return "redirect:/" + id + "/admin/category";
+        blogService.deleteCategory(categoryNo, authUser.getId());
+        return "redirect:/" + authUser.getId() + "/admin/category";
     }
 
     @Auth
     @RequestMapping("/admin/write")
-    public String adminWrite(@PathVariable("id") String id, Model model) {
-        List<CategoryVo> categories = blogService.getCategories(id);
+    public String adminWrite(@AuthUser UserVo authUser,@PathVariable("id") String id, Model model) {
+        List<CategoryVo> categories = blogService.getCategories(authUser.getId());
         model.addAttribute("categories", categories);
-//        if(!id.equals(authUser.getId())) {
-//
-//        }
         return "blog/admin-write";
     }
 
 
     @Auth
     @PostMapping ("/admin/write")
-    public String addPost(@PathVariable("id") String id,
+    public String addPost(@AuthUser UserVo authUser,
+                          @PathVariable("id") String id,
                           @RequestParam("title") String title,
                           @RequestParam("content") String content,
                           @RequestParam(value = "category", required = false) Long categoryNo) {
@@ -144,6 +151,6 @@ public class BlogController {
         postVo.setCategoryNo(categoryNo);
 
         blogService.addPost(postVo);
-        return "redirect:/" + id;
+        return "redirect:/" + authUser.getId();
     }
 }

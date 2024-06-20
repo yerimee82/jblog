@@ -10,19 +10,22 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class BlogRepository {
     private final SqlSession sqlSession;
 
-    public BlogVo find(String id) {
+    public BlogVo findBlog(String id) {
         return sqlSession.selectOne("blog.find-blog", id);
     }
 
-    public void update(BlogVo vo) {
+    public void updateBlog(BlogVo vo) {
         sqlSession.update("blog.update-blog", vo);
+    }
+
+    public void insertBlog(BlogVo vo) {
+        sqlSession.insert("blog.insertDefault", vo);
     }
 
     public void insertCategory(CategoryVo vo ) {

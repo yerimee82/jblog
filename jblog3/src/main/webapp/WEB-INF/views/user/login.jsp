@@ -19,7 +19,7 @@
 			<input id="id" name="id" type="text" value="">
 
       		<label for="password"><spring:message code="user.join.label.password"/></label>
-			<input id="password" name="password" type="text" value="">
+			<input id="password" name="password" type="password" value="">
 			<c:if test="${result == 'fail'}">
 				<p>
 					로그인이 실패 했습니다.

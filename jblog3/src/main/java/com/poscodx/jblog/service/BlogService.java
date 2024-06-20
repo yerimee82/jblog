@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -17,11 +16,11 @@ public class BlogService {
     private final BlogRepository blogRepository;
 
     public BlogVo getBlog(String id) {
-        return blogRepository.find(id);
+        return blogRepository.findBlog(id);
     }
 
     public void updateBlog(BlogVo vo) {
-        blogRepository.update(vo);
+        blogRepository.updateBlog(vo);
     }
 
     public void addCategory(CategoryVo vo) {

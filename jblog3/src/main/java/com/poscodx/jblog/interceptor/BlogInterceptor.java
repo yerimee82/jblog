@@ -1,7 +1,9 @@
 package com.poscodx.jblog.interceptor;
 
+import com.poscodx.jblog.security.AuthUser;
 import com.poscodx.jblog.service.BlogService;
 import com.poscodx.jblog.vo.BlogVo;
+import com.poscodx.jblog.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,13 +16,16 @@ public class BlogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        BlogVo blogVo = (BlogVo) request.getServletContext().getAttribute("blog");
-        if(blogVo == null) {
-            String id = getUserId(request);
-            blogVo = blogService.getBlog(id);
-            System.out.println(blogVo);
+        String userId = getUserId(request);
+        if (userId == null) {
+            return true;  // 유효한 사용자 아이디가 없으면 그냥 통과
+        }
+
+        BlogVo blogVo = blogService.getBlog(userId);
+        if (blogVo != null) {
             request.getServletContext().setAttribute("blog", blogVo);
         }
+
         return true;
     }
 

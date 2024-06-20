@@ -47,14 +47,14 @@
 <body>
 	<div class="center-content">
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
-		<form:form modelAttribute="userVo"
+		<form:form class="join-form" modelAttribute="userVo"
 				   id="join-form"
 				   name="joinForm"
 				   method="post"
 				   action="${pageContext.request.contextPath}/user/join">
 			<label class="block-label" for="name"><spring:message code="user.join.label.name"/></label>
 			<form:input path="name"/>
-			<p style="color:#f00; text-align: center; padding: 0">
+			<p style="color:#f00; text-align: left; padding: 0">
 			<spring:hasBindErrors name="userVo">
 			<c:if test="${errors.hasFieldErrors('name')}">
 				<spring:message code="${errors.getFieldError('name').codes[0]}"/>
@@ -65,7 +65,7 @@
 				<form:input path="id"/>
 			<input id="btn-checkId" type="button" value="id 중복체크">
 			<img id="img-checkId" style="display: none;" src="${pageContext.request.contextPath}/assets/images/check.png">
-			<p style="color:#f00; text-align: center; padding: 0">
+			<p style="color:#f00; text-align: left; padding: 0">
 				<form:errors path="id" />
 			</p>
 
@@ -73,7 +73,9 @@
 			<form:password path="password" />
 			<spring:hasBindErrors name="userVo">
 			<c:if test="${errors.hasFieldErrors('password')}">
+				<p style="color:#f00; text-align: left; padding: 0">
 				<spring:message code="${errors.getFieldError('password').codes[0]}"/>
+				</p>
 			</c:if>
 			</spring:hasBindErrors>
 

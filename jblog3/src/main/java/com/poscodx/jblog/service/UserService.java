@@ -2,6 +2,7 @@ package com.poscodx.jblog.service;
 
 import com.poscodx.jblog.repository.BlogRepository;
 import com.poscodx.jblog.repository.UserRepository;
+import com.poscodx.jblog.vo.BlogVo;
 import com.poscodx.jblog.vo.CategoryVo;
 import com.poscodx.jblog.vo.UserVo;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class UserService {
     public void join(UserVo vo) {
         userRepository.insert(vo);
         createDefaultCategory(vo.getId());
+        createDefaultBlog(vo.getId());
     }
 
     public UserVo getUser(String id) {
@@ -34,5 +36,14 @@ public class UserService {
         categoryVo.setId(userId);
 
         blogRepository.insertCategory(categoryVo);
+    }
+
+    private void createDefaultBlog(String userId) {
+        BlogVo blogVo = new BlogVo();
+        blogVo.setId(userId);
+        blogVo.setTitle("기본 블로그");
+        blogVo.setLogo("/assets/images/spring-logo.jpg");
+
+        blogRepository.insertBlog(blogVo);
     }
 }

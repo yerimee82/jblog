@@ -20,30 +20,33 @@
 		<div id="content">
 			<div class="blog-content">
 				<c:choose>
-					<c:when test="${not empty posts}">
-						<h4>${posts[0].title}</h4>
-						<p><c:out escapeXml="false" value="${fn:replace(posts[0].contents, crcn, br)}"/></p>
+					<c:when test="${not empty selectedPost}">
+						<h4>${selectedPost.title}</h4>
+						<p><c:out escapeXml="false" value="${fn:replace(selectedPost.contents, crcn, br)}"/></p>
 					</c:when>
 					<c:otherwise>
-						<p>포스트가 없습니다.</p>
+						<c:if test="${not empty posts}">
+							<h4>${posts[0].title}</h4>
+							<p><c:out escapeXml="false" value="${fn:replace(posts[0].contents, crcn, br)}"/></p>
+						</c:if>
+						<c:if test="${empty posts}">
+							<p>포스트가 없습니다.</p>
+						</c:if>
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<ul class="blog-list">
-				<c:if test="${fn:length(posts) > 1}">
-					<c:forEach items="${posts}" var="post">
-						<li>
-							<a href="${pageContext.request.contextPath}/${blog.id}/${post.categoryNo}/${post.no}">
-									${post.title}
-							</a>
-							<span>${post.regDate}</span>
-						</li>
-					</c:forEach>
-				</c:if>
-			</ul>
-		</div>
-	</div>
 
+			<ul class="blog-list">
+				<c:forEach items="${posts}" var="post">
+					<li>
+						<a href="${pageContext.request.contextPath}/${blog.id}/${post.categoryNo}/${post.no}">
+								${post.title}
+						</a>
+						<span>${post.regDate}</span>
+					</li>
+				</c:forEach>
+			</ul>
+	</div>
 	<div id="extra">
 		<div class="blog-logo">
 			<img id="logo" src="${pageContext.request.contextPath}${blog.logo}">

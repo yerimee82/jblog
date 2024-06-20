@@ -14,7 +14,7 @@
     <c:import url="/WEB-INF/views/includes/header.jsp" />
     <p class="error-message">
         <br>
-        <span> 505 Found</span>
+        <span> X </span>
         <br><br>
         <span>해당 블로그를 찾을 수 없습니다. </span>
         <br><br>
